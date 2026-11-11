@@ -1,12 +1,27 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Necesario para el *ngIf
+import { AdminVehiculosComponent } from './components/admin-vehiculos/admin-vehiculos';
+import { AdminAseguradorasComponent } from './components/admin-aseguradoras/admin-aseguradoras';
+import { AdminPolizasComponent } from './components/admin-polizas/admin-polizas';
+import { AdminInstitucionesComponent } from './components/admin-instituciones/admin-instituciones';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
-  templateUrl: './app.html',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    AdminVehiculosComponent, 
+    AdminAseguradorasComponent, 
+    AdminPolizasComponent,
+    AdminInstitucionesComponent
+  ],
+  templateUrl: './app.html'
 })
-export class App {
-  protected readonly title = signal('admin-flotas-front');
+export class AppComponent {
+  // Por defecto, al abrir la página, el administrador verá primero las instituciones
+  vistaActual: string = 'instituciones';
+
+  cambiarVista(vista: string) {
+    this.vistaActual = vista;
+  }
 }

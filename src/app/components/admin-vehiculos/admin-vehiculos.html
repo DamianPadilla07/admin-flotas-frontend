@@ -1,1 +1,57 @@
-<p>admin-vehiculos works!</p>
+<div style="max-width: 600px; margin: 30px auto; padding: 20px; font-family: Arial, sans-serif; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9;">
+  <h2 style="text-align: center; color: #333;">Gestión de Flotas - Registro de Vehículos</h2>
+  
+  <form (ngSubmit)="guardarVehiculo()">
+    
+    <!-- Placa -->
+    <div style="margin-bottom: 15px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 5px;">Placa:</label>
+      <input type="text" [(ngModel)]="vehiculo.placa" name="placa" required placeholder="Ej: ABC-1234" style="width: 100%; padding: 8px; box-sizing: border-box;" />
+    </div>
+
+    <!-- Modelo -->
+    <div style="margin-bottom: 15px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 5px;">Modelo:</label>
+      <input type="text" [(ngModel)]="vehiculo.modelo" name="modelo" required placeholder="Ej: Chevrolet Luv" style="width: 100%; padding: 8px; box-sizing: border-box;" />
+    </div>
+
+    <!-- Umbral de Depreciación -->
+    <div style="margin-bottom: 15px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 5px;">Umbral de Depreciación:</label>
+      <input type="number" [(ngModel)]="vehiculo.umbralDepreciacion" name="umbralDepreciacion" required placeholder="Ej: 5000" style="width: 100%; padding: 8px; box-sizing: border-box;" />
+    </div>
+
+        <!-- Aseguradora -->
+    <div style="margin-bottom: 15px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 5px;">Pertenece a la Institución:</label>
+      <select [(ngModel)]="vehiculo.institucion.id" name="institucionId" required style="width: 100%; padding: 8px; box-sizing: border-box; border-left: 4px solid #673ab7;">
+        <option [ngValue]="null">Seleccione una Institución</option>
+        <option *ngFor="let inst of instituciones" [ngValue]="inst.id">{{ inst.razonSocial }}</option>
+      </select>
+    </div>
+
+    <!-- Selector de Aseguradora -->
+    <div style="margin-bottom: 15px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 5px;">Aseguradora:</label>
+      <select [(ngModel)]="vehiculo.idAseguradora" (ngModelChange)="onAseguradoraChange($event)" name="aseguradoraId" style="width: 100%; padding: 8px; box-sizing: border-box;">
+        <option [ngValue]="null">Seleccione una Aseguradora</option>
+        <option *ngFor="let a of aseguradoras" [ngValue]="a.id">{{ a.nombre }}</option>
+      </select>
+    </div>
+
+    <!-- Selector de Póliza -->
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 5px;">Póliza:</label>
+      <select [(ngModel)]="vehiculo.poliza.id" name="polizaId" style="width: 100%; padding: 8px; box-sizing: border-box;">
+        <option [ngValue]="null">Seleccione una Póliza</option>
+        <option *ngFor="let p of polizas" [ngValue]="p.id">{{ p.numeroPoliza }} - Cobertura: ${{ p.montoCobertura }}</option>
+      </select>
+    </div>
+
+    <!-- Botón de Guardar -->
+    <button type="submit" style="width: 100%; background-color: #007bff; color: white; padding: 10px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;">
+      Registrar Vehículo en el Core
+    </button>
+
+  </form>
+</div>
