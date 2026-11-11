@@ -1,59 +1,43 @@
-# AdminFlotasFront
+#  Panel de Administración MVC - Frontend (Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.6.
+**Autor:** Damián Padilla  
+**Módulo:** Interfaz de Alimentación de Datos (Frontend)  
+**Materia:** Ingeniería Web  
 
-## Development server
+---
 
-To start a local development server, run:
+##  Descripción del Proyecto
+Este repositorio contiene la arquitectura Frontend (Single Page Application) del **Sistema Multi-Cliente de Gestión y Auditoría de Flotas**. Funciona como el panel de administración central (MVC) donde los jefes y administradores ingresan los datos operativos y financieros (Instituciones, Aseguradoras, Pólizas y Vehículos) que posteriormente son evaluados por el **Motor Core de Rentabilidad**.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+##  Cumplimiento de la Rúbrica y Decisiones Arquitectónicas
 
-## Code scaffolding
+### 1. Integridad Referencial Estricta (Dropdowns Dinámicos) 
+Tal como se exige en las especificaciones, la interfaz restringe el ingreso manual de claves foráneas para evitar datos huérfanos. 
+- **Implementación:** Los formularios de creación de Pólizas y Vehículos utilizan elementos `<select>` (Dropdowns) que consumen los endpoints del Backend mediante `HttpClient`. 
+- **Impacto:** El usuario no puede inventar o tipear el ID de una institución o aseguradora; está obligado a seleccionar entidades que ya existen en la base de datos de SQL Server, garantizando la integridad de las relaciones (1:N) de forma visual e intuitiva antes de enviar la petición (POST).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 2. Preparación para Validación de Datos Sensibles 
+El formulario captura el **Umbral de Depreciación** del vehículo. Aunque la interfaz guía al usuario, la arquitectura delega la validación estricta de este dato crítico (mínimo $1000.00) directamente al servidor (Spring Boot) para evitar saltos de seguridad en el navegador (JavaScript) que puedan vulnerar la fórmula matemática del Core.
 
-```bash
-ng generate component component-name
-```
+### 3. Arquitectura SPA Optimizada (Sin SSR) 
+- **Decisión Técnica:** Se deshabilitó intencionalmente el *Server-Side Rendering* (SSR) nativo de las versiones recientes de Angular.
+- **Justificación:** Al tratarse de un Panel Administrativo Interno (Dashboard corporativo) y no de una página pública (como un blog o e-commerce), el SEO no es un requerimiento. La aplicación corre al 100% del lado del cliente (Client-Side Rendering), lo cual aligera la carga del servidor y respeta el estándar de diseño de sistemas de back-office.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+##  Stack Tecnológico
+- **Framework:** Angular 18
+- **Arquitectura de Componentes:** Standalone Components (sin dependencias de `ngModules`)
+- **Estilos y Estructura:** HTML5, CSS3, TypeScript
+- **Comunicación HTTP:** `HttpClient` nativo de Angular
 
-## Building
+---
 
-To build the project run:
+##  Instrucciones de Ejecución Local
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. **Requisitos Previos:** Node.js y Angular CLI instalados.
+2. **Instalación:** Ejecutar `npm install` en la raíz del proyecto para restaurar los módulos de Node.
+3. **Servidor de Desarrollo:** Ejecutar el comando `ng serve`.
+4. **Acceso:** Abrir el navegador web en `http://localhost:4200`. *(Es indispensable asegurarse de que el Backend de Spring Boot esté corriendo simultáneamente en el puerto `8080` para evitar errores de CORS y permitir la carga de los Dropdowns).*
