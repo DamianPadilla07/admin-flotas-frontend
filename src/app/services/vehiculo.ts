@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class VehiculoService {
   
   // URL de tu backend local
-  private apiUrl = 'http://localhost:8080/api'; 
+private apiUrl = 'https://core-flotas.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
